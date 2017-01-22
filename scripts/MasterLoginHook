@@ -1,0 +1,107 @@
+#!/bin/bash
+#
+# Short:    Run all known LoginHooks
+# Author:   Mark J Swift
+# Version:  1.0.1
+# Modified: 01-Jan-2017
+#
+# Call from a shell as follows:    
+#   MasterLoginHook <User>
+
+# ---
+
+# Full souce of this script
+sv_ThisScriptFilePath="${0}"
+
+# Path to this script
+sv_ThisScriptDirPath="$(dirname "${sv_ThisScriptFilePath}")"
+
+# Filename of this script
+sv_ThisScriptFileName="$(basename "${sv_ThisScriptFilePath}")"
+
+# ---
+
+# Filename without extension
+GLB_sv_ThisScriptName="$(echo ${sv_ThisScriptFileName} | sed 's|\.[^.]*$||')"
+
+# Path to project files
+GLB_sv_ProjectDirPath="$(dirname "${sv_ThisScriptDirPath}")"
+
+# Include the CommonLib
+. "${GLB_sv_ProjectDirPath}/lib/CommonLib"
+
+# Exit if something went wrong unexpectedly
+if test -z "${GLB_sv_ProjectName}"
+then
+  exit 0
+fi
+
+# ---
+
+sv_LoggedInUserName="${1}"
+
+# ---
+
+if test -z "${sv_LoggedInUserName}"
+then
+  exit 0
+fi
+
+# ---
+
+# Exit if not the root user
+if [ "${GLB_sv_ThisUserName}" != "root" ]
+then
+  exit 0
+fi
+
+# ---
+
+GLB_nf_logmessage "NOTE: Running for user '${sv_LoggedInUserName}'"
+
+# ---
+
+# Run all known LoginHooks in background
+if test -e "${GLB_sv_ProjectConfig}/LoginHooks"
+then
+  while read sv_LoginHookLinkName
+  do
+    # Get the filepath of the script that the hook link points to
+    sv_LoginHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}")"
+    if test -z "${sv_LoginHookFilePath}"
+    then
+      # The hook links to nowhere - so delete it
+      rm -f "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
+    else
+      if ! test -e "${sv_LoginHookFilePath}"
+      then
+        # The hook link is broken - so delete it
+        rm -f "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
+      else
+
+        # The Hook link is OK - so run it
+        GLB_nf_logmessage "ATTENTION: Running LoginHook '${sv_LoginHookFilePath} ${sv_LoggedInUserName}'"
+        "${sv_LoginHookFilePath}" "${sv_LoggedInUserName}" &
+
+      fi
+    fi
+  done < <(ls -1t "${GLB_sv_ProjectConfig}/LoginHooks")
+fi
+
+# We dont want to quit until the background LoginHooks are finished - or they might terminate early.
+# We also dont want to wait around too long for LoginHooks to finish - so give a maximum time to finish.
+
+iv_DelayCount=0
+while [ ${iv_DelayCount} -lt ${GLB_iv_MaxRunTimeSecs} ]
+do
+  if test -z "$(jobs -r)"
+  then
+    break
+  fi
+
+  # we don't want to hog the CPU - so lets sleep a while
+  sleep 1
+      
+  iv_DelayCount=$((${iv_DelayCount}+1))
+done
+

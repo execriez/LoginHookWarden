@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# Short:    Check if the active LoginHook or LogoutHook has been altered
+# Author:   Mark J Swift
+# Version:  1.0.1
+# Modified: 01-Jan-2017
+#
+# Call from a shell as follows:    
+#   CheckHooks
+
+# ---
+
+# Full souce of this script
+sv_ThisScriptFilePath="${0}"
+
+# Path to this script
+sv_ThisScriptDirPath="$(dirname "${sv_ThisScriptFilePath}")"
+
+# Filename of this script
+sv_ThisScriptFileName="$(basename "${sv_ThisScriptFilePath}")"
+
+# ---
+
+# Filename without extension
+GLB_sv_ThisScriptName="$(echo ${sv_ThisScriptFileName} | sed 's|\.[^.]*$||')"
+
+# Path to project files
+GLB_sv_ProjectDirPath="$(dirname "${sv_ThisScriptDirPath}")"
+
+# Include the CommonLib
+. "${GLB_sv_ProjectDirPath}/lib/CommonLib"
+
+# Exit if something went wrong unexpectedly
+if test -z "${GLB_sv_ProjectName}"
+then
+  exit 0
+fi
+
+# ---
+
+# Exit if not the root user
+if [ "${GLB_sv_ThisUserName}" != "root" ]
+then
+  exit 0
+fi
+
+# ---
+
+GLB_nf_logmessage "NOTE: Checking com.apple.loginwindow for changes"
+
+# ---
+
+sv_MasterLoginHookFilePath="/usr/local/${GLB_sv_ProjectName}/scripts/MasterLoginHook"
+
+sv_CurrentLoginHookFilePath="$(defaults read com.apple.loginwindow LoginHook)"
+if [ "${sv_CurrentLoginHookFilePath}" != "${sv_MasterLoginHookFilePath}" ]
+then
+  if test -n "${sv_CurrentLoginHookFilePath}"
+  then
+    sv_LoginHookLinkName=$(echo "${sv_CurrentLoginHookFilePath}" | tr "/" "-")
+    if ! test -e "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
+    then
+      GLB_nf_logmessage "ATTENTION: Installing LoginHook '${sv_CurrentLoginHookFilePath}'"
+      mkdir -p "${GLB_sv_ProjectConfig}/LoginHooks"
+      ln -sf "${sv_CurrentLoginHookFilePath}" "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
+    fi
+  fi
+  defaults write com.apple.loginwindow LoginHook "${sv_MasterLoginHookFilePath}"
+fi
+
+# ---
+
+sv_MasterLogoutHookFilePath="/usr/local/${GLB_sv_ProjectName}/scripts/MasterLogoutHook"
+
+sv_CurrentLogoutHookFilePath="$(defaults read com.apple.loginwindow LogoutHook)"
+if [ "${sv_CurrentLogoutHookFilePath}" != "${sv_MasterLogoutHookFilePath}" ]
+then
+  if test -n "${sv_CurrentLogoutHookFilePath}"
+  then
+    sv_LogoutHookLinkName=$(echo "${sv_CurrentLogoutHookFilePath}" | tr "/" "-")
+    if ! test -e "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}"
+    then
+      GLB_nf_logmessage "ATTENTION: Installing LogoutHook '${sv_CurrentLogoutHookFilePath}'"
+      mkdir -p "${GLB_sv_ProjectConfig}/LogoutHooks"
+      ln -sf "${sv_CurrentLogoutHookFilePath}" "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}"
+    fi
+  fi
+  defaults write com.apple.loginwindow LogoutHook "${sv_MasterLogoutHookFilePath}"
+fi
+
+# ---

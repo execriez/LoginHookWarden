@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Short:    Constants
+# Author:   Mark J Swift
+# Version:  1.0.1
+# Modified: 01-Jan-2017
+#
+
+# 'Constants' sets the following globals:
+#
+#  GLB_sv_ProjectVersion                  - Project version
+#  GLB_sv_ProjectName                     - Project name
+#  GLB_sv_ProjectSignature                - Project signature
+#
+#  GLB_iv_MaxRunTimeSecs                  - Max time a script can run before we quit
+#  GLB_iv_MaxLogSizeBytes                 - How big the log file can get in bytes
+#
+
+GLB_sv_ProjectVersion="1.0.1"
+GLB_sv_ProjectName="LoginHookWarden"
+
+GLB_sv_ProjectSignature="com.github.execriez.${GLB_sv_ProjectName}"
+GLB_sv_ProjectConfig="/Library/Preferences/SystemConfiguration/${GLB_sv_ProjectSignature}"
+
+GLB_iv_MaxRunTimeSecs=60
+GLB_iv_MaxLogSizeBytes=20480

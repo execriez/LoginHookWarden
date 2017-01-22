@@ -1,0 +1,103 @@
+#!/bin/bash
+#
+# Short:    Perform pre-install checks
+# Author:   Mark J Swift
+# Version:  1.0.1
+# Modified: 01-Jan-2017
+#
+#
+# Called as follows (as root):    
+#   PreInstall
+
+# ---
+
+# Full souce of this script
+sv_ThisScriptFilePath="${0}"
+
+# Path to this script
+sv_ThisScriptDirPath="$(dirname "${sv_ThisScriptFilePath}")"
+
+# Filename of this script
+sv_ThisScriptFileName="$(basename "${sv_ThisScriptFilePath}")"
+
+# ---
+
+# Filename without extension
+GLB_sv_ThisScriptName="$(echo ${sv_ThisScriptFileName} | sed 's|\.[^.]*$||')"
+
+# Path to project files
+GLB_sv_ProjectDirPath="$(dirname "${sv_ThisScriptDirPath}")"
+
+# Include the CommonLib
+. "${GLB_sv_ProjectDirPath}/lib/CommonLib"
+
+# Exit if something went wrong unexpectedly
+if test -z "${GLB_sv_ProjectName}"
+then
+  exit 0
+fi
+
+# ---
+
+# Where we should install
+sv_RootDirPath="${1}"
+
+if [ "${sv_RootDirPath}" = "/" ]
+then
+  sv_RootDirPath=""
+fi
+
+# ---
+
+# Exit if not the root user
+if [ "${GLB_sv_ThisUserName}" != "root" ]
+then
+  exit 0
+fi
+
+# ---
+
+GLB_nf_logmessage "NOTE: Performing pre-install checks"
+
+if test -z "${sv_RootDirPath}"
+then
+
+  if test -n "$(launchctl list | grep "${GLB_sv_ProjectSignature}.CheckHooks")"
+  then
+    GLB_nf_logmessage "ERROR: Unable to install. ${GLB_sv_ProjectName} is already installed and running."
+    exit 99
+  fi
+
+  # Do a quick check to see if some other process is regularly updating the hooks
+
+  # Get the existing Login and Logout hooks
+  sv_ExistingLoginHookFilePath="$(defaults read com.apple.loginwindow LoginHook)"
+  sv_ExistingLogoutHookFilePath="$(defaults read com.apple.loginwindow LogoutHook)"
+
+  # Clear the Login and Logout hooks
+  defaults write com.apple.loginwindow LoginHook ""
+  defaults write com.apple.loginwindow LogoutHook ""
+
+  # Wait around a bit
+  sleep 4
+
+  # Re-read the hooks - they should still be null
+  sv_CurrentLoginHookFilePath="$(defaults read com.apple.loginwindow LoginHook)"
+  sv_CurrentLogoutHookFilePath="$(defaults read com.apple.loginwindow LogoutHook)"
+
+  # Restore original hooks
+  defaults write com.apple.loginwindow LoginHook "${sv_ExistingLoginHookFilePath}"
+  defaults write com.apple.loginwindow LogoutHook "${sv_ExistingLogoutHookFilePath}"
+
+  if test -n "${sv_CurrentLoginHookFilePath}${sv_CurrentLogoutHookFilePath}"
+  then
+    GLB_nf_logmessage "ERROR: Unable to install. Something else is already managing the LoginHooks."
+    exit 99
+  fi
+
+fi
+
+GLB_nf_logmessage "NOTE: OK to install."
+
+exit 0
+

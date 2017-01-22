@@ -1,0 +1,9 @@
+The uninstaller uninstalls the following files and directories:
+
+  /Library/LaunchDaemons/com.github.execriez.LoginHookWarden.CheckHooks.plist
+
+  /usr/LoginHookWarden/
+
+If custom Login and Logout hooks have been installed, then the most recent ones will be restored into the com.apple.loginwindow hooks after the uninstall.
+
+Without LoginHookWarden, there can be only one LoginHook and one LogoutHook.

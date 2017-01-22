@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+# Short:    CommonLib
+# Author:   Mark J Swift
+# Version:  1.0.1
+# Modified: 01-Jan-2017
+#
+
+# 'CommonLib' defines the following globals:
+#
+#  GLB_sv_ThisUserName                     - The name of the user that is running this script
+#  GLB_iv_ThisUserID                       - The user ID of the user that is running this script
+#  GLB_bv_LoggedInUserIsAdmin              - Whether the user running this script is an admin ("true" or "false")
+#
+# 'CommonLib' defines the following functions:
+#
+#  GLB_nf_logmessage <messagetxt>          - Output message text to the log file
+#
+#  Key:
+#    GLB_ - global variable/function
+#
+#    bv_  - string variable with the values "true" or "false"
+#    iv_  - integer variable
+#    sv_  - string variable
+#
+#    nf_  - null function    (doesn't return a value)
+#    bf_  - boolean function (returns string values "true" or "false"
+#    if_  - integer function (returns an integer value)
+#    sf_  - string function  (returns a string value)
+
+# ---
+
+# Include the contants, only if they are not already loaded
+if test -z "${GLB_sv_ProjectName}"
+then
+. "${GLB_sv_ProjectDirPath}/lib/Constants"
+fi
+
+# ---
+
+GLB_nf_logmessage()   # messagetxt
+{
+  if test -e "/Library/Logs/${GLB_sv_ProjectSignature}.log"
+  then
+    if [ $(stat -f "%z" "/Library/Logs/${GLB_sv_ProjectSignature}.log") -gt ${GLB_iv_MaxLogSizeBytes} ]
+    then
+      mv -f "/Library/Logs/${GLB_sv_ProjectSignature}.log" "/Library/Logs/${GLB_sv_ProjectSignature}.previous.log"
+    fi
+  fi
+  echo "$(date '+%d %b %Y %H:%M:%S') ${GLB_sv_ThisScriptName}: ${1}"  >> "/Library/Logs/${GLB_sv_ProjectSignature}.log"
+  echo >&2 "$(date '+%d %b %Y %H:%M:%S') ${GLB_sv_ThisScriptName}: ${1}"
+}
+
+# ---
+
+# Get name of user running this script
+GLB_sv_ThisUserName="$(whoami)"
+
+# Get ID of user running this script
+GLB_iv_ThisUserID="$(id -u ${GLB_sv_ThisUserName})"
+
+# Check if the user running this script is an admin (returns "true" or "false")
+if [ "$(dseditgroup -o checkmember -m "${GLB_sv_ThisUserName}" -n . admin | cut -d" " -f1)" = "yes" ]
+then
+  GLB_bv_ThisUserIsAdmin="true"
+else
+  GLB_bv_ThisUserIsAdmin="false"
+fi
+
+
