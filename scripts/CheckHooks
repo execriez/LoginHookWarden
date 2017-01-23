@@ -2,8 +2,8 @@
 #
 # Short:    Check if the active LoginHook or LogoutHook has been altered
 # Author:   Mark J Swift
-# Version:  1.0.1
-# Modified: 01-Jan-2017
+# Version:  1.0.2
+# Modified: 23-Jan-2017
 #
 # Call from a shell as follows:    
 #   CheckHooks
@@ -64,6 +64,19 @@ then
       mkdir -p "${GLB_sv_ProjectConfig}/LoginHooks"
       ln -sf "${sv_CurrentLoginHookFilePath}" "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
     fi
+  else
+    # The LoginHook has been set to null
+    sv_LoginHookLinkName=$(ls -1t "${GLB_sv_ProjectConfig}/LoginHooks/")
+    if [ $(echo "${sv_LoginHookLinkName}" | wc -l) -eq 1 ]
+    then
+      # If there is only one hook, we can assume that setting the it to null means that we want to remove it
+      sv_LoginHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}")"
+      if test -n "${sv_LoginHookFilePath}"
+      then
+        GLB_nf_logmessage "ATTENTION: Uninstalling LoginHook '${sv_LoginHookFilePath}'"
+      fi
+      rm -f "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
+    fi
   fi
   defaults write com.apple.loginwindow LoginHook "${sv_MasterLoginHookFilePath}"
 fi
@@ -83,6 +96,19 @@ then
       GLB_nf_logmessage "ATTENTION: Installing LogoutHook '${sv_CurrentLogoutHookFilePath}'"
       mkdir -p "${GLB_sv_ProjectConfig}/LogoutHooks"
       ln -sf "${sv_CurrentLogoutHookFilePath}" "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}"
+    fi
+  else
+    # The LogoutHook has been set to null
+    sv_LogoutHookLinkName=$(ls -1t "${GLB_sv_ProjectConfig}/LogoutHooks/")
+    if [ $(echo "${sv_LogoutHookLinkName}" | wc -l) -eq 1 ]
+    then
+      # If there is only one hook, we can assume that setting the it to null means that we want to remove it
+      sv_LogoutHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}")"
+      if test -n "${sv_LogoutHookFilePath}"
+      then
+        GLB_nf_logmessage "ATTENTION: Uninstalling LogoutHook '${sv_LogoutHookFilePath}'"
+      fi
+      rm -f "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}"
     fi
   fi
   defaults write com.apple.loginwindow LogoutHook "${sv_MasterLogoutHookFilePath}"

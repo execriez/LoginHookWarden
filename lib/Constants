@@ -2,8 +2,8 @@
 #
 # Short:    Constants
 # Author:   Mark J Swift
-# Version:  1.0.1
-# Modified: 01-Jan-2017
+# Version:  1.0.2
+# Modified: 23-Jan-2017
 #
 
 # 'Constants' sets the following globals:
@@ -16,7 +16,7 @@
 #  GLB_iv_MaxLogSizeBytes                 - How big the log file can get in bytes
 #
 
-GLB_sv_ProjectVersion="1.0.1"
+GLB_sv_ProjectVersion="1.0.2"
 GLB_sv_ProjectName="LoginHookWarden"
 
 GLB_sv_ProjectSignature="com.github.execriez.${GLB_sv_ProjectName}"

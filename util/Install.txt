@@ -1,18 +1,30 @@
-The installer installs the following files and directories:
+INSTALLATION:
+
+The installer will install the following files and directories:
 
   /Library/LaunchDaemons/com.github.execriez.LoginHookWarden.CheckHooks.plist
 
   /usr/LoginHookWarden/
 
-After installation, existing Login and Logout hooks will still work.
+There's no need to reboot.
 
-To add another LoginHook or LogoutHook, use the defaults command to write a value to the relevant plist key - just as you would do normally, i.e:
+Existing Login and Logout hooks will still work after installation, even though the existing LoginHook and LogoutHook settings are overwitten.
 
-  defaults write com.apple.loginwindow LoginHook PATH-TO-SCRIPT
-  defaults write com.apple.loginwindow LogoutHook PATH-TO-SCRIPT
+The installer will fail if LoginHookWarden is already installed, or if the installer determines that another process is managing LoginHooks.
 
-You can do this as often as you like, to create as many login and logout hooks as you want.
+After installation, you can write to the relevant com.apple.loginwindow key value several times, to create several login and logout hooks - all of which will be serviced.
 
-After installation, you can check the log file here:
+
+ADDING A CUSTOM LOGIN HOOK
+
+Adding a custom LoginHook or LogoutHook is done as you would expect, by using the defaults command to write a value to the relevant com.apple.loginwindow key as follows:
+
+  defaults write com.apple.loginwindow LoginHook PATH-SCRIPT
+  defaults write com.apple.loginwindow LogoutHook PATH-SCRIPT
+
+
+LOGS:
+
+Logs are written to the following file:
 
   /Library/Logs/com.github.execriez.LoginHookWarden.log

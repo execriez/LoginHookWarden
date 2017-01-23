@@ -2,8 +2,8 @@
 #
 # Short:    Utility script - Build installation package
 # Author:   Mark J Swift
-# Version:  2.0.1
-# Modified: 01-Jan-2017
+# Version:  1.0.2
+# Modified: 23-Jan-2017
 #
 # Called as follows:    
 #   MakePackage.command

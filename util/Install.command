@@ -2,8 +2,8 @@
 #
 # Short:    Install LoginHookWarden - command-line equivalent of the package
 # Author:   Mark J Swift
-# Version:  1.0.1
-# Modified: 01-Jan-2017
+# Version:  1.0.2
+# Modified: 23-Jan-2017
 #
 #
 # Called as follows:    
