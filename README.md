@@ -135,7 +135,7 @@ You can use the log file to check if your custom hook is being serviced.
 
 1.0.2 - 23 JAN 2017
 
-* Added code to remove a custom hook if there is only one, and you write null to the relevant com.apple.loginwindow LoginHook or LogoutHook.
+* Added code so that - if there is only one custom LoginHook and LogoutHook, writing a null value to the relevant com.apple.loginwindow key removes the LoginHook or LogoutHook.
 
 * Updated the readme in the installer and uninstaller.
 
