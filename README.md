@@ -63,7 +63,7 @@ There's no need to reboot.
 
 If custom Login and Logout hooks have been installed, then the most recent ones will be restored into the com.apple.loginwindow hooks after the uninstall.
 
-After the uninstall LoginHookWarden everything go back to normal, and there can be only one LoginHook and one LogoutHook.
+After the uninstall everything goes back to normal - and there can be only one LoginHook and one LogoutHook.
 	
 ##Adding a custom login hook
 
