@@ -166,9 +166,9 @@ else
   
   if test -z "${sv_RootDirPath}"
   then
-    pkgscripts 2>/dev/null --forget "${LW_sv_LabWardenSignature}"
+    pkgscripts 2>/dev/null --forget "${GLB_sv_ProjectSignature}"
   else
-    pkgscripts 2>/dev/null --forget "${LW_sv_LabWardenSignature}" --volume "${sv_RootDirPath}"
+    pkgscripts 2>/dev/null --forget "${GLB_sv_ProjectSignature}" --volume "${sv_RootDirPath}"
   fi
 
 fi

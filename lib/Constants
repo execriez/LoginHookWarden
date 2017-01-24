@@ -8,20 +8,20 @@
 
 # 'Constants' sets the following globals:
 #
-#  GLB_sv_ProjectVersion                  - Project version
 #  GLB_sv_ProjectName                     - Project name
 #  GLB_sv_ProjectDeveloper                - Developer tag
+#  GLB_sv_ProjectVersion                  - Project version
 #
-#  GLB_iv_MaxRunTimeSecs                  - Max time a script can run before we quit
 #  GLB_iv_MaxLogSizeBytes                 - How big the log file can get in bytes
+#  GLB_iv_MaxRunTimeSecs                  - Max time a login/logout hook can run before we quit
 #
 #  GLB_sv_ProjectSignature                - Project signature
 #  GLB_sv_ProjectConfig                   - Where the projects configs and prefs are stored
 #
 
-GLB_sv_ProjectVersion="1.0.2"
 GLB_sv_ProjectName="LoginHookWarden"
 GLB_sv_ProjectDeveloper="com.github.execriez"
+GLB_sv_ProjectVersion="1.0.2"
 
 GLB_iv_MaxLogSizeBytes=20480
 GLB_iv_MaxRunTimeSecs=60
