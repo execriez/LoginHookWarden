@@ -80,11 +80,14 @@ else
       if test -f "${sv_RootDirPath}"/Library/LaunchDaemons/${GLB_sv_ProjectSignature}.CheckHooks.plist
       then
         launchctl unload "${sv_RootDirPath}"/Library/LaunchDaemons/${GLB_sv_ProjectSignature}.CheckHooks.plist
-      else
-        GLB_nf_logmessage "NOTE: You will need to reboot to completely uninstall ${GLB_sv_ProjectName}."
+        sleep 1
       fi
     fi
 
+    if test -n "$(launchctl list | grep -i "${GLB_sv_ProjectSignature}.CheckHooks")"
+    then
+      GLB_nf_logmessage "NOTE: You will need to reboot to completely uninstall ${GLB_sv_ProjectName}."
+    fi
   fi
   
   # remove old LauncDaemon
