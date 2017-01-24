@@ -74,7 +74,7 @@ else
 
     GLB_nf_logmessage "NOTE: Uninstalling ${GLB_sv_ProjectName}."
 
-    if test -n "$(launchctl list | grep "${GLB_sv_ProjectSignature}.CheckHooks")"
+    if test -n "$(launchctl list | grep -i "${GLB_sv_ProjectSignature}.CheckHooks")"
     then
 
       if test -f "${sv_RootDirPath}"/Library/LaunchDaemons/${GLB_sv_ProjectSignature}.CheckHooks.plist

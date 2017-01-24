@@ -2,9 +2,9 @@ UNINSTALLING:
 
 The uninstaller will uninstall the following files and directories:
 
-  /Library/Preferences/SystemConfiguration/com.github.execriez.LoginHookWarden/
+  /Library/Preferences/SystemConfiguration/com.github.execriez.loginhookwarden/
 
-  /Library/LaunchDaemons/com.github.execriez.LoginHookWarden.CheckHooks.plist
+  /Library/LaunchDaemons/com.github.execriez.loginhookwarden.CheckHooks.plist
 
   /usr/LoginHookWarden/
 

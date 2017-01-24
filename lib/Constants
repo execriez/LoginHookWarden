@@ -19,7 +19,7 @@
 GLB_sv_ProjectVersion="1.0.2"
 GLB_sv_ProjectName="LoginHookWarden"
 
-GLB_sv_ProjectSignature="com.github.execriez.${GLB_sv_ProjectName}"
+GLB_sv_ProjectSignature="com.github.execriez.$(echo ${GLB_sv_ProjectName} | tr [A-Z] [a-z])"
 GLB_sv_ProjectConfig="/Library/Preferences/SystemConfiguration/${GLB_sv_ProjectSignature}"
 
 GLB_iv_MaxRunTimeSecs=60

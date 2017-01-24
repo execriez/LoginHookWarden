@@ -38,7 +38,7 @@ Download the LoginHookWarden zip archive from <https://github.com/execriez/Login
 
 The installer will install the following files and directories:
 
-* /Library/LaunchDaemons/com.github.execriez.LoginHookWarden.CheckHooks.plist
+* /Library/LaunchDaemons/com.github.execriez.loginhookwarden.CheckHooks.plist
 * /usr/LoginHookWarden/
 
 There's no need to reboot.
@@ -55,8 +55,8 @@ After installation, you can write to the relevant com.apple.loginwindow key valu
 
 The uninstaller will uninstall the following files and directories:
 
-  /Library/Preferences/SystemConfiguration/com.github.execriez.LoginHookWarden/
-  /Library/LaunchDaemons/com.github.execriez.LoginHookWarden.CheckHooks.plist
+  /Library/Preferences/SystemConfiguration/com.github.execriez.loginhookwarden/
+  /Library/LaunchDaemons/com.github.execriez.loginhookwarden.CheckHooks.plist
   /usr/LoginHookWarden/
 
 There's no need to reboot.
@@ -89,8 +89,8 @@ With more than one custom hook, setting the relevant com.apple.loginwindow key v
 
 Instead, you need to either delete the custom LOGIN-SCRIPT/LOGOUT-SCRIPT, or delete the link to the script from the following folders: 
 
-* /Library/Preferences/SystemConfiguration/com.github.execriez.LoginHookWarden/LoginHooks/
-* /Library/Preferences/SystemConfiguration/com.github.execriez.LoginHookWarden/LogoutHooks/
+* /Library/Preferences/SystemConfiguration/com.github.execriez.loginhookwarden/LoginHooks/
+* /Library/Preferences/SystemConfiguration/com.github.execriez.loginhookwarden/LogoutHooks/
 
 Once the script, or the link to the script has been removed, the hook will no longer be serviced.
 
@@ -100,8 +100,8 @@ LoginHookWarden watches for modifications to the file "/private/var/root/Library
 
 If it determines that a new LoginHook or LogoutHook has been set, it reads the new value(s) from com.apple.loginwindow, and creates a symbolic link to the each script in the following folder(s):
 
-* /Library/Preferences/SystemConfiguration/com.github.execriez.LoginHookWarden/LoginHooks/
-* /Library/Preferences/SystemConfiguration/com.github.execriez.LoginHookWarden/LogoutHooks/
+* /Library/Preferences/SystemConfiguration/com.github.execriez.loginhookwarden/LoginHooks/
+* /Library/Preferences/SystemConfiguration/com.github.execriez.loginhookwarden/LogoutHooks/
 
 LoginHookWarden then overwrites the values in com.apple.loginwindow with it's own LoginHook and LogoutHook code. This code runs every custom login hook that has a symbolic link in the LoginHook or LogoutHook folders above. 
 
@@ -115,7 +115,7 @@ This allows multiple custom login hooks to be set and serviced.
 
 Logs are written to the following file:
 
-* /Library/Logs/com.github.execriez.LoginHookWarden.log
+* /Library/Logs/com.github.execriez.loginhookwarden.log
 
 A typical log file looks something like this:
 
