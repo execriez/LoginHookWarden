@@ -2,38 +2,24 @@
 #
 # Short:    Check if the active LoginHook or LogoutHook has been altered
 # Author:   Mark J Swift
-# Version:  1.0.2
-# Modified: 23-Jan-2017
+# Version:  1.0.3
+# Modified: 11-Apr-2017
 #
 # Call from a shell as follows:    
 #   CheckHooks
 
 # ---
 
-# Full souce of this script
-sv_ThisScriptFilePath="${0}"
-
-# Path to this script
-sv_ThisScriptDirPath="$(dirname "${sv_ThisScriptFilePath}")"
-
-# Filename of this script
-sv_ThisScriptFileName="$(basename "${sv_ThisScriptFilePath}")"
-
-# ---
-
-# Filename without extension
-GLB_sv_ThisScriptName="$(echo ${sv_ThisScriptFileName} | sed 's|\.[^.]*$||')"
-
-# Path to project files
-GLB_sv_ProjectDirPath="$(dirname "${sv_ThisScriptDirPath}")"
+# assume that all scripts are in a subdirectory off the main project directory
+GLB_sv_ProjectDirPath="$(dirname $(dirname ${0}))"
 
 # Include the CommonLib
-. "${GLB_sv_ProjectDirPath}/lib/CommonLib"
+. "${GLB_sv_ProjectDirPath}/inc/Common.sh"
 
 # Exit if something went wrong unexpectedly
 if test -z "${GLB_sv_ProjectName}"
 then
-  exit 0
+  exit 90
 fi
 
 # ---
@@ -41,16 +27,18 @@ fi
 # Exit if not the root user
 if [ "${GLB_sv_ThisUserName}" != "root" ]
 then
-  exit 0
+  exit 91
 fi
 
 # ---
 
-GLB_nf_logmessage "NOTE: Checking com.apple.loginwindow for changes"
+GLB_nf_logmessage ${GLB_iv_MsgLevelInfo} "Checking com.apple.loginwindow for changes"
 
 # ---
 
-sv_MasterLoginHookFilePath="/usr/local/${GLB_sv_ProjectName}/scripts/MasterLoginHook"
+mkdir -p "${GLB_sv_ProjectConfig}/LoginHooks"
+
+sv_MasterLoginHookFilePath="/usr/local/${GLB_sv_ProjectName}/lib/MasterLoginHook"
 
 sv_CurrentLoginHookFilePath="$(defaults read com.apple.loginwindow LoginHook)"
 if [ "${sv_CurrentLoginHookFilePath}" != "${sv_MasterLoginHookFilePath}" ]
@@ -60,8 +48,7 @@ then
     sv_LoginHookLinkName=$(echo "${sv_CurrentLoginHookFilePath}" | tr "/" "-")
     if ! test -e "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
     then
-      GLB_nf_logmessage "ATTENTION: Installing LoginHook '${sv_CurrentLoginHookFilePath}'"
-      mkdir -p "${GLB_sv_ProjectConfig}/LoginHooks"
+      GLB_nf_logmessage ${GLB_iv_MsgLevelNotice} "Installing LoginHook '${sv_CurrentLoginHookFilePath}'"
       ln -sf "${sv_CurrentLoginHookFilePath}" "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
     fi
   else
@@ -73,7 +60,7 @@ then
       sv_LoginHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}")"
       if test -n "${sv_LoginHookFilePath}"
       then
-        GLB_nf_logmessage "ATTENTION: Uninstalling LoginHook '${sv_LoginHookFilePath}'"
+        GLB_nf_logmessage ${GLB_iv_MsgLevelNotice} "Uninstalling LoginHook '${sv_LoginHookFilePath}'"
       fi
       rm -f "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
     fi
@@ -83,7 +70,9 @@ fi
 
 # ---
 
-sv_MasterLogoutHookFilePath="/usr/local/${GLB_sv_ProjectName}/scripts/MasterLogoutHook"
+mkdir -p "${GLB_sv_ProjectConfig}/LogoutHooks"
+
+sv_MasterLogoutHookFilePath="/usr/local/${GLB_sv_ProjectName}/lib/MasterLogoutHook"
 
 sv_CurrentLogoutHookFilePath="$(defaults read com.apple.loginwindow LogoutHook)"
 if [ "${sv_CurrentLogoutHookFilePath}" != "${sv_MasterLogoutHookFilePath}" ]
@@ -93,8 +82,7 @@ then
     sv_LogoutHookLinkName=$(echo "${sv_CurrentLogoutHookFilePath}" | tr "/" "-")
     if ! test -e "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}"
     then
-      GLB_nf_logmessage "ATTENTION: Installing LogoutHook '${sv_CurrentLogoutHookFilePath}'"
-      mkdir -p "${GLB_sv_ProjectConfig}/LogoutHooks"
+      GLB_nf_logmessage ${GLB_iv_MsgLevelNotice} "Installing LogoutHook '${sv_CurrentLogoutHookFilePath}'"
       ln -sf "${sv_CurrentLogoutHookFilePath}" "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}"
     fi
   else
@@ -106,7 +94,7 @@ then
       sv_LogoutHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}")"
       if test -n "${sv_LogoutHookFilePath}"
       then
-        GLB_nf_logmessage "ATTENTION: Uninstalling LogoutHook '${sv_LogoutHookFilePath}'"
+        GLB_nf_logmessage ${GLB_iv_MsgLevelNotice} "Uninstalling LogoutHook '${sv_LogoutHookFilePath}'"
       fi
       rm -f "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}"
     fi

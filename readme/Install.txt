@@ -1,0 +1,32 @@
+INSTALLATION:
+
+Download the LoginHookWarden zip archive from <https://github.com/execriez/LoginHookWarden>, then unzip the archive on a Mac workstation.
+
+Ideally, to install - you should double-click the following installer package which can be found in the "SupportFiles" directory.
+
+  LoginHookWarden.pkg
+	
+If the installer package isn't available, you can run the command-line installer which can be found in the "util" directory:
+
+  sudo Install
+
+The installer will install the following files and directories:
+
+  /Library/LaunchDaemons/com.github.execriez.loginhookwarden.CheckHooks.plist
+  /Library/Preferences/SystemConfiguration/com.github.execriez.loginhookwarden
+  /usr/LoginHookWarden/
+
+There's no need to reboot.
+
+Existing Login and Logout hooks will still work after installation, even though the existing LoginHook and LogoutHook values are overwitten.
+
+The installer will fail if LoginHookWarden is already installed, or if the installer determines that another process is managing LoginHooks.
+
+After installation, you can write to the relevant com.apple.loginwindow key value several times, to create several login and logout hooks - all of which will be serviced.
+
+
+LOGS:
+
+Logs are written to the following file:
+
+  /Library/Logs/com.github.execriez.loginhookwarden.log

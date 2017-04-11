@@ -2,38 +2,33 @@
 #
 # Short:    Run all known LogoutHooks
 # Author:   Mark J Swift
-# Version:  1.0.2
-# Modified: 23-Jan-2017
+# Version:  1.0.3
+# Modified: 11-Apr-2017
 #
-# Call from a shell as follows:    
+# Called at logout by the LogoutHook hook as follows (as root):    
 #   MasterLogoutHook <User>
 
 # ---
 
-# Full souce of this script
-sv_ThisScriptFilePath="${0}"
-
-# Path to this script
-sv_ThisScriptDirPath="$(dirname "${sv_ThisScriptFilePath}")"
-
-# Filename of this script
-sv_ThisScriptFileName="$(basename "${sv_ThisScriptFilePath}")"
-
-# ---
-
-# Filename without extension
-GLB_sv_ThisScriptName="$(echo ${sv_ThisScriptFileName} | sed 's|\.[^.]*$||')"
-
-# Path to project files
-GLB_sv_ProjectDirPath="$(dirname "${sv_ThisScriptDirPath}")"
+# assume that all scripts are in a subdirectory off the main project directory
+GLB_sv_ProjectDirPath="$(dirname $(dirname ${0}))"
 
 # Include the CommonLib
-. "${GLB_sv_ProjectDirPath}/lib/CommonLib"
+. "${GLB_sv_ProjectDirPath}/inc/Common.sh"
 
 # Exit if something went wrong unexpectedly
 if test -z "${GLB_sv_ProjectName}"
 then
-  exit 0
+  exit 90
+fi
+
+# ---
+
+# Exit if not the root user
+if [ "${GLB_sv_ThisUserName}" != "root" ]
+then
+  GLB_nf_logmessage ${GLB_iv_MsgLevelErr} "Unable to run, try: sudo ${GLB_sv_ThisScriptName}"
+  exit 91
 fi
 
 # ---
@@ -44,20 +39,13 @@ sv_LoggedInUserName="${1}"
 
 if test -z "${sv_LoggedInUserName}"
 then
+  GLB_nf_logmessage ${GLB_iv_MsgLevelWarn} "Hook was called without a user; that's odd"
   exit 0
 fi
 
 # ---
 
-# Exit if not the root user
-if [ "${GLB_sv_ThisUserName}" != "root" ]
-then
-  exit 0
-fi
-
-# ---
-
-GLB_nf_logmessage "NOTE: Running for user '${sv_LoggedInUserName}'"
+GLB_nf_logmessage ${GLB_iv_MsgLevelInfo} "Running for user '${sv_LoggedInUserName}'"
 
 # ---
 
@@ -80,7 +68,7 @@ then
       else
 
         # The Hook link is OK - so run it
-         GLB_nf_logmessage "ATTENTION: Running LogoutHook '${sv_LogoutHookFilePath} ${sv_LoggedInUserName}'"
+         GLB_nf_logmessage ${GLB_iv_MsgLevelNotice} "Running LogoutHook '${sv_LogoutHookFilePath} ${sv_LoggedInUserName}'"
         "${sv_LogoutHookFilePath}" "${sv_LoggedInUserName}" &
 
       fi
