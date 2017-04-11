@@ -89,12 +89,12 @@ then
     defaults write com.apple.loginwindow LoginHook ""
 
     # Check all login hooks, and re-instate the most recent
-    if test -e "${GLB_sv_ProjectConfig}/LoginHooks"
+    if test -e "${GLB_sv_ProjectConfigDirPath}/LoginHooks"
     then
       while read sv_LoginHookLinkName
       do
         # Get the filepath of the script that the hook link points to
-        sv_LoginHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}")"
+        sv_LoginHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfigDirPath}/LoginHooks/${sv_LoginHookLinkName}")"
         if test -n "${sv_LoginHookFilePath}"
         then
           if test -e "${sv_LoginHookFilePath}"
@@ -105,7 +105,7 @@ then
             break
           fi
         fi
-      done < <(ls -1t "${GLB_sv_ProjectConfig}/LoginHooks")
+      done < <(ls -1t "${GLB_sv_ProjectConfigDirPath}/LoginHooks")
     fi
   fi
 
@@ -117,12 +117,12 @@ then
     defaults write com.apple.loginwindow LogoutHook ""
 
     # Check all logout hooks, and re-instate the most recent
-    if test -e "${GLB_sv_ProjectConfig}/LogoutHooks"
+    if test -e "${GLB_sv_ProjectConfigDirPath}/LogoutHooks"
     then
       while read sv_LogoutHookLinkName
       do
         # Get the filepath of the script that the hook link points to
-        sv_LogoutHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfig}/LogoutHooks/${sv_LogoutHookLinkName}")"
+        sv_LogoutHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfigDirPath}/LogoutHooks/${sv_LogoutHookLinkName}")"
         if test -n "${sv_LogoutHookFilePath}"
         then
           if test -e "${sv_LogoutHookFilePath}"
@@ -132,13 +132,13 @@ then
            defaults write com.apple.loginwindow LogoutHook "${sv_LogoutHookFilePath}"
           fi
         fi
-      done < <(ls -1t "${GLB_sv_ProjectConfig}/LogoutHooks")
+      done < <(ls -1t "${GLB_sv_ProjectConfigDirPath}/LogoutHooks")
     fi
 
   fi
 
   # Remove the config files
-  rm -fR "${GLB_sv_ProjectConfig}"
+  rm -fR "${GLB_sv_ProjectConfigDirPath}"
 fi
 
 # remove old install

@@ -50,8 +50,8 @@ GLB_nf_logmessage ${GLB_iv_MsgLevelInfo} "Performing post-install checks"
 
 if test -z "${sv_RootDirPath}"
 then
-  mkdir -p "${GLB_sv_ProjectConfig}/LoginHooks"
-  mkdir -p "${GLB_sv_ProjectConfig}/LogoutHooks"
+  mkdir -p "${GLB_sv_ProjectConfigDirPath}/LoginHooks"
+  mkdir -p "${GLB_sv_ProjectConfigDirPath}/LogoutHooks"
 
   if test -f /Library/LaunchDaemons/${GLB_sv_ProjectSignature}.CheckHooks.plist
   then

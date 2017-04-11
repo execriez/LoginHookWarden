@@ -20,7 +20,7 @@ then
   #  GLB_sv_ProjectSignature                - Project signature (com.github.execriez.LoginHookWarden)
   #  GLB_sv_ProjectMajorVersion             - Project major version (i.e. 1)
   #
-  #  GLB_sv_ProjectConfig                   - Where the projects configs and prefs are stored
+  #  GLB_sv_ProjectConfigDirPath                   - Where the projects configs and prefs are stored
   #
   #  GLB_iv_MaxLogSizeBytes                 - How big the log file can get in bytes
   #  GLB_iv_LogLevelTrap                    - The default logging level

@@ -145,7 +145,7 @@ then
   GLB_sv_ProjectSignature="$(echo ${GLB_sv_ProjectDeveloper}.${GLB_sv_ProjectName} | tr [A-Z] [a-z])"
   GLB_sv_ProjectMajorVersion="$(echo "${GLB_sv_ProjectVersion}" | cut -d"." -f1)"
 
-  GLB_sv_ProjectConfig="/Library/Preferences/SystemConfiguration/${GLB_sv_ProjectSignature}/V${GLB_sv_ProjectMajorVersion}"
+  GLB_sv_ProjectConfigDirPath="/Library/Preferences/SystemConfiguration/${GLB_sv_ProjectSignature}/V${GLB_sv_ProjectMajorVersion}"
 
   # -- Get some info about this script
 
@@ -189,7 +189,7 @@ then
   if [ "${GLB_sv_ThisUserName}" = "root" ]
   then
     GLB_sv_ThisUserLogDirPath="/Library/Logs"
-    mkdir -p "${GLB_sv_ProjectConfig}"
+    mkdir -p "${GLB_sv_ProjectConfigDirPath}"
 
   else
     GLB_sv_ThisUserLogDirPath=~/Library/Logs

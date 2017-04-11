@@ -50,21 +50,21 @@ GLB_nf_logmessage ${GLB_iv_MsgLevelInfo} "Running for user '${sv_LoggedInUserNam
 # ---
 
 # Run all known LoginHooks in background
-if test -e "${GLB_sv_ProjectConfig}/LoginHooks"
+if test -e "${GLB_sv_ProjectConfigDirPath}/LoginHooks"
 then
   while read sv_LoginHookLinkName
   do
     # Get the filepath of the script that the hook link points to
-    sv_LoginHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}")"
+    sv_LoginHookFilePath="$(stat -f "%Y" "${GLB_sv_ProjectConfigDirPath}/LoginHooks/${sv_LoginHookLinkName}")"
     if test -z "${sv_LoginHookFilePath}"
     then
       # The hook links to nowhere - so delete it
-      rm -f "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
+      rm -f "${GLB_sv_ProjectConfigDirPath}/LoginHooks/${sv_LoginHookLinkName}"
     else
       if ! test -e "${sv_LoginHookFilePath}"
       then
         # The hook link is broken - so delete it
-        rm -f "${GLB_sv_ProjectConfig}/LoginHooks/${sv_LoginHookLinkName}"
+        rm -f "${GLB_sv_ProjectConfigDirPath}/LoginHooks/${sv_LoginHookLinkName}"
       else
 
         # The Hook link is OK - so run it
@@ -73,7 +73,7 @@ then
 
       fi
     fi
-  done < <(ls -1t "${GLB_sv_ProjectConfig}/LoginHooks")
+  done < <(ls -1t "${GLB_sv_ProjectConfigDirPath}/LoginHooks")
 fi
 
 # We dont want to quit until the background LoginHooks are finished - or they might terminate early.
