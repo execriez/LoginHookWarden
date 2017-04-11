@@ -9,7 +9,7 @@
 if test -z "${GLB_sv_ProjectSignature}"
 then
 
-  # 'CommonLib' defines the following globals:
+  # Defines the following globals:
   #
   #  GLB_sv_ThisScriptFilePath                       - Full source path of running script
   #  GLB_sv_ThisScriptDirPath                        - Directory location of running script
@@ -21,7 +21,7 @@ then
   #  GLB_iv_ThisUserID                               - The user ID of the user that is running this script
   #  GLB_bv_ThisUserIsAdmin                          - Whether the user running this script is an admin ("true" or "false")
   #
-  # 'CommonLib' defines the following functions:
+  # Defines the following functions:
   #
   #  GLB_sf_LogLevel <loglevel>                      - Convert log level integer into log level text
   #  GLB_nf_logmessage <loglevel> <messagetxt>       - Output message text to the log file

@@ -10,7 +10,7 @@
 if test -z "${GLB_sv_ProjectName}"
 then
 
-  # 'Constants' sets the following globals:
+  # Sets the following globals:
   #
   #  GLB_sv_ProjectName                     - Project name (LoginHookWarden)
   #  GLB_sv_ProjectInitials                 - Project initials (LHW)
@@ -20,7 +20,7 @@ then
   #  GLB_sv_ProjectSignature                - Project signature (com.github.execriez.LoginHookWarden)
   #  GLB_sv_ProjectMajorVersion             - Project major version (i.e. 1)
   #
-  #  GLB_sv_ProjectConfigDirPath                   - Where the projects configs and prefs are stored
+  #  GLB_sv_ProjectConfigDirPath            - Where the projects configs and prefs are stored
   #
   #  GLB_iv_MaxLogSizeBytes                 - How big the log file can get in bytes
   #  GLB_iv_LogLevelTrap                    - The default logging level
@@ -32,7 +32,7 @@ then
   #  GLB_iv_MsgLevelWarn                    - (4) Warning, may indicate that an error will occur if no action is taken
   #  GLB_iv_MsgLevel                        - (5) Notice, events that are unusual, but not error conditions
   #  GLB_iv_MsgLevelInfo                    - (6) Informational, normal operational messages that require no action
-  #  GLB_iv_MsgLevelDebug Debug             - (6) Debug, information useful for developing and debugging
+  #  GLB_iv_MsgLevelDebug                   - (7) Debug, information useful for developing and debugging
   #
   #  GLB_iv_MaxRunTimeSecs                  - Max time a login/logout hook can run before we quit
   #
